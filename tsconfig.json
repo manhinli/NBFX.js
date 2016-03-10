@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"target": "es5",
+		"module": "amd",
+		"sourceMap": false,
+        "declaration": true,
+        "outDir": "./build/",
+        "outFile": "./build/nbfx.js"
+	},
+    "files": [
+        "src/NBFX.ts"
+    ]
+}

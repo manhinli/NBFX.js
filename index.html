@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>nya.nz / .NET Binary: XML Data with SOAP</title>
+
+    <style>
+        html {
+            box-sizing: border-box;
+        }
+        
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 10em;
+        }
+    </style>
+</head>
+
+<body>
+    <div><a href="https://nya.nz">nya.nz</a></div>
+    <h1>.NET Binary: XML Data with SOAP</h1>
+    <p>
+        Rudimentary JavaScript parser for SOAP messages transmitted in .NET Binary. Based on Microsoft Open Specifications Documentation documents: MC-NBFX (6.0), MC-NBFS (4.0).
+    </p>
+    <p>
+        Wrote this over 5 days in TypeScript around the New Year 2016 period; I was working with a project that ported an WCF consuming application that talked to a server configured to communicate SOAP messages only in NBFX binary format. I stopped because we decided it was probably better to just reconfigure the server to use text XML that could be fed into a browser's native DOM/XML parser.
+    </p>
+    <p>
+        Code's a bit crummy inside but it works surprisingly robustly with a couple hundred KB of raw data (though the unoptimised JS is slow with such large inputs...) I thought it might be of interest to someone in the same position as I was in porting applications using WCF in the NBFX format.
+    </p>
+    <p>
+        <b>Notes:</b>
+    </p>
+    <ul>
+        <li>Records requiring 64-bit integers (Int64Text, UInt64Text) or such integers internally (DateTimeText, TimeSpanText) are not yet implemented due to lack of native int64 support in JavaScript</li>
+        <li>DecimalText, StartListText, EndListText, Comment, Array record support are not yet implemented</li>
+        <li>Generated XML document does not have namespace information attached to elements - information inserted into tag names and attributes is *not* done with *NS methods</li>
+        <li>Spec documentation has a few errors/problems especially around the reference examples, so implementation may not work correctly with all raw data</li>
+    </ul>
+    <p>
+        Enter base64 encoded raw data: (Note large input may slow/crash browser)
+        <br>
+        <textarea id="input"></textarea>
+    </p>
+    <p>
+        <button id="convert">Convert</button>
+        <button id="convertXML">Convert to XML document only (see console)</button>
+    </p>
+    <p>
+        Output:
+        <br>
+        <textarea id="output"></textarea>
+    </p>
+
+    <script src="build/nbfx.js"></script>
+    <script>
+        function loadInput(nbfxObj) {
+            nbfxObj.fromUint8Array($Base64Util.Base64toUint8Array(document.getElementById("input").value));
+            return nbfxObj;
+        }
+        
+        document.getElementById("convert").addEventListener("click", function (e) {
+            document.getElementById("output").value = loadInput(new NBFX()).toString(); 
+        });
+        
+        document.getElementById("convertXML").addEventListener("click", function (e) {
+            console.log(loadInput(new NBFX()).toXML().documentElement);
+        });
+    </script>
+</body>
+
+</html>
