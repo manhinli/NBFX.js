@@ -3,7 +3,7 @@ MC-NBFX parser written in TypeScript
 
 Rudimentary JavaScript parser for SOAP messages transmitted in .NET Binary. Based on Microsoft Open Specifications Documentation documents: MC-NBFX (6.0), MC-NBFS (4.0).
 
-Try it at: https://nya.nz/nbfx
+Try it at: https://static.nya.nz/nbfx
 
 Wrote this over 5 days in TypeScript around the New Year 2016 period; I was working with a project that ported an WCF consuming application that talked to a server configured to communicate SOAP messages only in NBFX binary format. I stopped because we decided it was probably better to just reconfigure the server to use text XML that could be fed into a browser's native DOM/XML parser.
 
